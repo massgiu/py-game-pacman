@@ -1,5 +1,6 @@
 import pygame, sys
 from src.settings import *
+from src.player import *
 
 pygame.init()
 vec = pygame.math.Vector2
@@ -11,9 +12,10 @@ class App:
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = 'start'
-        self.cell_width = WIDTH // 28
-        self.cell_height = HEIGHT // 28
+        self.cell_width = MAZE_WIDTH // 28
+        self.cell_height = MAZE_HEIGHT // 30
         self.load()  # load background
+        self.player = Player(self, PLAYER_START_POS)
 
     def run(self):
         while self.running:
@@ -44,14 +46,14 @@ class App:
     def draw_grid(self):
         # vertical lines
         for x in range(WIDTH // self.cell_width):
-            pygame.draw.line(self.screen, GREY, (self.cell_width * x, 0), (self.cell_width * x, HEIGHT))
+            pygame.draw.line(self.background, GREY, (self.cell_width * x, 0), (self.cell_width * x, HEIGHT))
         # horizontal lines
         for y in range(WIDTH // self.cell_height):
-            pygame.draw.line(self.screen, GREY, (0, self.cell_height * y), (WIDTH, self.cell_height * y))
+            pygame.draw.line(self.background, GREY, (0, self.cell_height * y), (WIDTH, self.cell_height * y))
 
     def load(self):
         self.background = pygame.image.load('../media/maze.png')
-        self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
+        self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 
     # Start functions
 
@@ -88,6 +90,10 @@ class App:
         pass
 
     def playing_draw(self):
-        self.screen.blit(self.background, (0, 0))
+        self.screen.fill(BLACK)
+        self.screen.blit(self.background, (TOP_BOTTOM_BUFFER // 2, TOP_BOTTOM_BUFFER // 2))
         self.draw_grid()
+        self.draw_text(f'CURRENT SCORE: {0}', self.screen, (60, 0), 18, WHITE, START_FONT, False)
+        self.draw_text(f'HIGH SCORE: {0}', self.screen, (WIDTH//2+60, 0), 18, WHITE, START_FONT, False)
+        self.player.draw()
         pygame.display.update()
