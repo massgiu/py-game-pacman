@@ -12,10 +12,13 @@ class App:
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = 'start'
-        self.cell_width = MAZE_WIDTH // 28
-        self.cell_height = MAZE_HEIGHT // 30
-        self.load()  # load background
+        self.cell_width = MAZE_WIDTH // NUM_COLS
+        self.cell_height = MAZE_HEIGHT // NUM_ROWS
+        self.walls = []
+        self.coins = []
+        self.load(self.walls, self.coins)  # load background
         self.player = Player(self, PLAYER_START_POS)
+
 
     def run(self):
         while self.running:
@@ -50,11 +53,22 @@ class App:
         # horizontal lines
         for y in range(WIDTH // self.cell_height):
             pygame.draw.line(self.background, GREY, (0, self.cell_height * y), (WIDTH, self.cell_height * y))
+        # draw walls
+        for coin in self.coins:
+            pygame.draw.rect(self.background, YELLOW,
+                             (coin[0]*self.cell_width, coin[1]*self.cell_height, self.cell_width, self.cell_height))
 
-    def load(self):
+    def load(self, walls, coins):
         self.background = pygame.image.load('../media/maze.png')
         self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
-
+        #reading wall.txt file
+        with open('../media/wall.txt', 'r') as file:
+            for height, line in enumerate(file):
+                for width, char in enumerate(line):
+                    if char =='1':
+                        walls.append(vec(width,height))
+                    if char =='C':
+                        coins.append(vec(width,height))
     # Start functions
 
     def start_events(self):
@@ -85,11 +99,21 @@ class App:
             if event.type == pygame.QUIT:
                 self.running = False
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.player.move(LEFT)
+        elif keys[pygame.K_RIGHT]:
+            self.player.move(RIGHT)
+        elif keys[pygame.K_UP]:
+            self.player.move(UP)
+        elif keys[pygame.K_DOWN]:
+            self.player.move(DOWN)
 
     def playing_update(self):
-        pass
+        self.player.update()
 
     def playing_draw(self):
+        # clock = pygame.time.Clock()
+        # clock.tick(10)
         self.screen.fill(BLACK)
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER // 2, TOP_BOTTOM_BUFFER // 2))
         self.draw_grid()
