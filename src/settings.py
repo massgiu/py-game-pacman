@@ -14,14 +14,16 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 GREY = (90,90,90)
 YELLOW = (167, 179, 34)
+ENEMY_COLORS = [(66,133,244),(219,68,55),(244,160,0),(15,157,88)]
+ENEMY_PERSONALITIES = ['speedy', 'slow', 'random', 'scared']
 #font settings
 START_TEXT_SIZE = 16
 START_FONT = 'arial_black'
 #player settings
-PLAYER_START_POS = vec(1,1) #row, col
+PLAYER_START_POS = None #row, col
 PLAYER_COLOR = (190,194,15)
 #direction
-LEFT = vec(-1,0)
-RIGHT = vec(1,0)
-UP = vec(0,-1)
-DOWN = vec(0,1)
+LEFT = vec(-1,0) #decreases 1 width pixel
+RIGHT = vec(1,0) #increases 1 width pixel
+UP = vec(0,-1) #decreases 1 height pixel
+DOWN = vec(0,1) #increases 1 height pixel
