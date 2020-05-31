@@ -13,7 +13,7 @@ class Player:
         self.stored_direction = None
         self.able_to_move = True
         self.current_score = 0
-        self.speed = 1
+        self.speed = 2
 
     def update(self):
         if self.able_to_move: #this is True if is there is not a wall

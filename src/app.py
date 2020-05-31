@@ -83,8 +83,8 @@ class App:
     # Start functions
 
     def make_enemies(self):
-        for enemy_pos in self.enemies_pos:
-            self.enemies.append(Enemy(self, enemy_pos))
+        for index, enemy_pos in enumerate(self.enemies_pos):
+            self.enemies.append(Enemy(self, enemy_pos, index))
 
     def start_events(self):
         for event in pygame.event.get():
@@ -140,7 +140,6 @@ class App:
         self.player.draw()
         for index, enemy in enumerate(self.enemies):
             enemy.draw(index)
-            enemy.set_personality(index)
         pygame.display.update()
         # self.coins.pop()
 
