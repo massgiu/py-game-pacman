@@ -58,4 +58,40 @@ class Utils:
         for coin in coins:
             pygame.draw.circle(screen, COINS_COLOR, (int(coin.x * CELL_W + CELL_W // 2) + TOP_BOTTOM_BUFFER // 2,
                           int(coin.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),5)
+    @classmethod
+    def remove_life(self, player, player_start_pos, enemies, enemies_start_pos):
+        player.lives -= 1
+        if (player.lives == 0):
+            return "game over"
+        else:
+            player.grid_pos = vec(player_start_pos)
+            # form grid to pixel
+            player.pix_pos = player.from_grid_to_pix_pos(player.grid_pos)
+            player.direction = NEUTRAL
+            #reposition for enemyes
+            for index, enemy in enumerate(enemies):
+                enemy.grid_pos = vec(enemies_start_pos[index])
+                # form grid to pixel
+                enemy.pix_pos = enemy.from_grid_to_pix_pos(enemy.grid_pos)
+                enemy.direction = NEUTRAL
+            return 'playing'
+
+    @classmethod
+    def reset(self, player, enemies, player_start_pos, enemies_start_pos, screen):
+        player.lives = 3
+        player.current_score = 0
+        player.grid_pos = vec(player_start_pos)
+        # form grid to pixel
+        player.pix_pos = player.from_grid_to_pix_pos(player.grid_pos)
+        player.direction = NEUTRAL
+        for index, enemy in enumerate(enemies):
+            enemy.grid_pos = vec(enemies_start_pos[index])
+            # form grid to pixel
+            enemy.pix_pos = enemy.from_grid_to_pix_pos(enemy.grid_pos)
+            enemy.direction = NEUTRAL
+        self.coins = []
+        # redraws coins
+        _, coins, _, _ = Utils.read_layout(screen)
+        state = 'playing'
+        return state, coins
 
