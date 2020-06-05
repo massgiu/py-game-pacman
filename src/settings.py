@@ -27,3 +27,4 @@ LEFT = vec(-1,0) #decreases 1 width pixel
 RIGHT = vec(1,0) #increases 1 width pixel
 UP = vec(0,-1) #decreases 1 height pixel
 DOWN = vec(0,1) #increases 1 height pixel
+NEUTRAL = vec(0,0)

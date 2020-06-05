@@ -37,11 +37,11 @@ class Enemy:
         if personality == ENEMY_PERSONALITIES[0] or self.personality == ENEMY_PERSONALITIES[1]:  # speedy or slow
             return self.app.player.grid_pos  # target to pursuit
         else:  # scared mode
-            if self.app.player.grid_pos.x < NUM_COLS // 2 and self.app.player.grid_pos.y < NUM_ROWS // 2:
+            if self.app.player.grid_pos[0] < NUM_COLS // 2 and self.app.player.grid_pos[1] < NUM_ROWS // 2:
                 return vec(1, 1)  # top left
-            elif self.app.player.grid_pos.x > NUM_COLS // 2 and self.app.player.grid_pos.y < NUM_ROWS // 2:
+            elif self.app.player.grid_pos[0] > NUM_COLS // 2 and self.app.player.grid_pos[1] < NUM_ROWS // 2:
                 return vec(NUM_COLS - 2, 1)  # top right
-            elif self.app.player.grid_pos.x < NUM_COLS // 2 and self.app.player.grid_pos.y > NUM_ROWS // 2:
+            elif self.app.player.grid_pos[0] < NUM_COLS // 2 and self.app.player.grid_pos[1] > NUM_ROWS // 2:
                 return vec(1, NUM_ROWS - 1)  # down left
             else:
                 return vec(NUM_COLS - 2, NUM_ROWS - 1)  # down right
@@ -62,10 +62,10 @@ class Enemy:
 
     def time_to_move(self):
         if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % self.app.cell_width == 0:
-            if self.direction == LEFT or self.direction == RIGHT or self.direction==vec(0,0):
+            if self.direction == LEFT or self.direction == RIGHT or self.direction==NEUTRAL:
                 return True
         if int(self.pix_pos.y + TOP_BOTTOM_BUFFER // 2) % self.app.cell_height == 0:
-            if self.direction == UP or self.direction == DOWN or self.direction==vec(0,0):
+            if self.direction == UP or self.direction == DOWN or self.direction==NEUTRAL:
                 return True
         return False
 
