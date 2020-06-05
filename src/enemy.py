@@ -21,7 +21,7 @@ class Enemy(AbstractCharacter):
             # update pixel position
             self.pix_pos += self.direction * self.speed
         if self.is_cell_centered():
-            self.move(self.target)
+            self.move()
         # from pixel position find row and col
         self.grid_pos[0], self.grid_pos[1] = self.from_pixel_to_grid_pos(self.pix_pos)
         # self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + CELL_W // 2) // CELL_W + 1
@@ -54,11 +54,11 @@ class Enemy(AbstractCharacter):
     def set_personality(self, index):
         return ENEMY_PERSONALITIES[index]
 
-    def move(self, target):
+    def move(self):
         if self.personality == ENEMY_PERSONALITIES[2]: #random
             self.direction = self.get_random_direction()
         else:  # speedy, scared, slow
-            self.direction = self.get_path_direction(target)
+            self.direction = self.get_path_direction(self.target)
 
     '''
     This method creates random direction for enemy with 'random' personality

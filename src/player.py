@@ -21,7 +21,6 @@ class Player(AbstractCharacter):
             if self.stored_direction !=None:
                 self.direction = self.stored_direction
             self.able_to_move = self.can_move(self.direction) #True if in that 'direction' ther isn't a wall
-        #Setting grid position from pixel pos
         self.grid_pos[0], self.grid_pos[1] = self.from_pixel_to_grid_pos(self.pix_pos)
         if self.is_on_coin():
             self.eat_coin()
