@@ -7,7 +7,7 @@ class Utils:
         pass
 
     @classmethod
-    def read_layout(self, screen):
+    def read_layout(self, background):
         walls = []
         coins = []
         enemies_start_pos = []
@@ -23,6 +23,6 @@ class Utils:
                     elif char in ['2', '3', '4', '5']:
                         enemies_start_pos.append([width, height])
                     elif char == 'B':
-                        pygame.draw.rect(screen, BLACK, (width * CELL_W, height * CELL_H,
+                        pygame.draw.rect(background, BLACK, (width * CELL_W, height * CELL_H,
                                                          CELL_W, CELL_H))
         return walls, coins, player_start_pos, enemies_start_pos

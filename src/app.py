@@ -16,7 +16,6 @@ class App:
         self.running = True
         self.state = 'start'
         self.enemies = []
-        # self.enemies_start_pos = []
         self.walls, self.coins, self.player_start_pos, self.enemies_start_pos = self.load()  # load background and init pos
         self.player = Player(self, vec(self.player_start_pos))
         self.make_enemies(self.enemies_start_pos)
@@ -64,9 +63,9 @@ class App:
         #                      (coin[0]*self.cell_width, coin[1]*self.cell_height, self.cell_width, self.cell_height))
 
     def load(self):
-        self.background = pygame.image.load('../media/maze.png')
+        self.background = pygame.image.load(BACKGROUND_IMG_URL)
         self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
-        walls, coins, player_start_pos, enemies_start_pos = Utils.read_layout(self.screen)
+        walls, coins, player_start_pos, enemies_start_pos = Utils.read_layout(self.background)
         return walls, coins, player_start_pos, enemies_start_pos
 
     # Start functions
@@ -147,12 +146,12 @@ class App:
         else:
             self.player.grid_pos = vec(player_start_pos)
             # form grid to pixel
-            self.player.pix_pos = self.player.get_pix_pos(self.player.grid_pos)
+            self.player.pix_pos = self.player.from_grid_to_pix_pos(self.player.grid_pos)
             self.player.direction = NEUTRAL
             for index, enemy in enumerate(self.enemies):
                 enemy.grid_pos = vec(enemies_start_pos[index])
                 # form grid to pixel
-                enemy.pix_pos = enemy.get_pix_pos(enemy.grid_pos)
+                enemy.pix_pos = enemy.from_grid_to_pix_pos(enemy.grid_pos)
                 enemy.direction = NEUTRAL
 
     def game_over_events(self):
@@ -184,12 +183,12 @@ class App:
         self.player.current_score = 0
         self.player.grid_pos = vec(player_start_pos)
         # form grid to pixel
-        self.player.pix_pos = self.player.get_pix_pos(self.player.grid_pos)
+        self.player.pix_pos = self.player.from_grid_to_pix_pos(self.player.grid_pos)
         self.player.direction = NEUTRAL
         for index, enemy in enumerate(self.enemies):
             enemy.grid_pos = vec(enemies_start_pos[index])
             # form grid to pixel
-            enemy.pix_pos = enemy.get_pix_pos(enemy.grid_pos)
+            enemy.pix_pos = enemy.from_grid_to_pix_pos(enemy.grid_pos)
             enemy.direction = NEUTRAL
         self.coins = []
         # redraws coins

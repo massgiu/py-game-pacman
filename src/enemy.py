@@ -20,11 +20,12 @@ class Enemy(AbstractCharacter):
         if self.target != self.grid_pos:
             # update pixel position
             self.pix_pos += self.direction * self.speed
-        if self.time_to_move():
+        if self.is_cell_centered():
             self.move(self.target)
         # from pixel position find row and col
-        self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + CELL_W // 2) // CELL_W + 1
-        self.grid_pos[1] = (self.pix_pos[1] - TOP_BOTTOM_BUFFER + CELL_H // 2) // CELL_H + 1
+        self.grid_pos[0], self.grid_pos[1] = self.from_pixel_to_grid_pos(self.pix_pos)
+        # self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + CELL_W // 2) // CELL_W + 1
+        # self.grid_pos[1] = (self.pix_pos[1] - TOP_BOTTOM_BUFFER + CELL_H // 2) // CELL_H + 1
 
     def set_target(self, personality):
         if personality == ENEMY_PERSONALITIES[0] or self.personality == ENEMY_PERSONALITIES[1]:  # speedy or slow
@@ -53,21 +54,15 @@ class Enemy(AbstractCharacter):
     def set_personality(self, index):
         return ENEMY_PERSONALITIES[index]
 
-    def time_to_move(self):
-        if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % CELL_W == 0:
-            if self.direction == LEFT or self.direction == RIGHT or self.direction==NEUTRAL:
-                return True
-        if int(self.pix_pos.y + TOP_BOTTOM_BUFFER // 2) % CELL_H == 0:
-            if self.direction == UP or self.direction == DOWN or self.direction==NEUTRAL:
-                return True
-        return False
-
     def move(self, target):
         if self.personality == ENEMY_PERSONALITIES[2]: #random
             self.direction = self.get_random_direction()
         else:  # speedy, scared, slow
             self.direction = self.get_path_direction(target)
 
+    '''
+    This method creates random direction for enemy with 'random' personality
+    '''
     def get_random_direction(self):
         while True:
             number = random.randint(0, 3)

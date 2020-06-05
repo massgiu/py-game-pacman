@@ -8,6 +8,7 @@ TOP_BOTTOM_BUFFER = 50 #space around background to put text
 MAZE_WIDTH, MAZE_HEIGHT = WIDTH-TOP_BOTTOM_BUFFER, HEIGHT-TOP_BOTTOM_BUFFER
 CELL_W = MAZE_WIDTH // NUM_COLS
 CELL_H = MAZE_HEIGHT // NUM_ROWS
+BACKGROUND_IMG_URL = '../media/maze.png'
 #color settings
 BLACK = (0, 0, 0)
 OCHER = (170, 132, 58)
