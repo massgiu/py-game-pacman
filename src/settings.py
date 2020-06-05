@@ -6,6 +6,8 @@ NUM_COLS = 28
 NUM_ROWS = 30
 TOP_BOTTOM_BUFFER = 50 #space around background to put text
 MAZE_WIDTH, MAZE_HEIGHT = WIDTH-TOP_BOTTOM_BUFFER, HEIGHT-TOP_BOTTOM_BUFFER
+CELL_W = MAZE_WIDTH // NUM_COLS
+CELL_H = MAZE_HEIGHT // NUM_ROWS
 #color settings
 BLACK = (0, 0, 0)
 OCHER = (170, 132, 58)
@@ -14,6 +16,7 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 GREY = (90,90,90)
 YELLOW = (167, 179, 34)
+COINS_COLOR = (124, 123, 7)
 ENEMY_COLORS = [(66,133,244),(219,68,55),(244,160,0),(15,157,88)]
 ENEMY_PERSONALITIES = ['speedy', 'slow', 'random', 'scared']
 #font settings

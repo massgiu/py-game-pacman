@@ -1,25 +1,18 @@
 import pygame
 import random
 from src.settings import *
+from src.abstract_character import AbstractCharacter
 
 vec = pygame.math.Vector2
 
-
-class Enemy:
+class Enemy(AbstractCharacter):
 
     def __init__(self, app, init_grid_pos, index):
-        self.app = app
-        self.grid_pos = init_grid_pos  # (row,col)
-        self.pix_pos = self.get_pix_pos(self.grid_pos)
-        self.radius = int(self.app.cell_width // 2.3)
-        self.direction = vec(0,0)
+        super().__init__(app, init_grid_pos)
+        self.radius = int(CELL_W // 2.3)
         self.personality = self.set_personality(index)
         self.target = self.set_target(self.personality)
         self.speed = self.set_speed()
-
-    def get_pix_pos(self, grid_pos):
-        return vec(grid_pos.x * self.app.cell_width + TOP_BOTTOM_BUFFER // 2 + self.app.cell_width // 2,
-                   grid_pos.y * self.app.cell_height + TOP_BOTTOM_BUFFER // 2 + self.app.cell_height // 2)
 
     def update(self):
         self.target = self.set_target(self.personality)
@@ -30,8 +23,8 @@ class Enemy:
         if self.time_to_move():
             self.move(self.target)
         # from pixel position find row and col
-        self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + self.app.cell_width // 2) // self.app.cell_width + 1
-        self.grid_pos[1] = (self.pix_pos[1] - TOP_BOTTOM_BUFFER + self.app.cell_height // 2) // self.app.cell_height + 1
+        self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + CELL_W // 2) // CELL_W + 1
+        self.grid_pos[1] = (self.pix_pos[1] - TOP_BOTTOM_BUFFER + CELL_H // 2) // CELL_H + 1
 
     def set_target(self, personality):
         if personality == ENEMY_PERSONALITIES[0] or self.personality == ENEMY_PERSONALITIES[1]:  # speedy or slow
@@ -61,10 +54,10 @@ class Enemy:
         return ENEMY_PERSONALITIES[index]
 
     def time_to_move(self):
-        if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % self.app.cell_width == 0:
+        if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % CELL_W == 0:
             if self.direction == LEFT or self.direction == RIGHT or self.direction==NEUTRAL:
                 return True
-        if int(self.pix_pos.y + TOP_BOTTOM_BUFFER // 2) % self.app.cell_height == 0:
+        if int(self.pix_pos.y + TOP_BOTTOM_BUFFER // 2) % CELL_H == 0:
             if self.direction == UP or self.direction == DOWN or self.direction==NEUTRAL:
                 return True
         return False
@@ -89,9 +82,6 @@ class Enemy:
             if self.can_move(dir):
                 break  # right direction
         return dir
-
-    def can_move(self, dir):
-        return (self.grid_pos + dir) not in self.app.walls
 
     def get_path_direction(self, target):
         next_cell = self.find_next_cell_in_path(self.grid_pos, target)
