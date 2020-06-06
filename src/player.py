@@ -1,5 +1,6 @@
 import pygame
 from src.settings import *
+from src.utils import Utils
 from src.abstract_character import AbstractCharacter
 
 vec = pygame.math.Vector2
@@ -11,7 +12,7 @@ class Player(AbstractCharacter):
         self.stored_direction = None
         self.able_to_move = True
         self.current_score = 0
-        self.speed = 2
+        self.speed = 4
         self.lives = 3
 
     def update(self):
@@ -26,7 +27,16 @@ class Player(AbstractCharacter):
             self.eat_coin()
 
     def draw(self):
-        pygame.draw.circle(self.app.screen,PLAYER_COLOR,(int(self.pix_pos.x),int(self.pix_pos.y)), CELL_W//2-2)
+        if self.direction == RIGHT:
+            self.image = 'right'
+        elif self.direction == LEFT:
+            self.image = 'left'
+        elif self.direction == UP:
+            self.image = 'up'
+        else:
+            self.image = 'down'
+        # pygame.draw.circle(self.app.screen,PLAYER_COLOR,(int(self.pix_pos.x),int(self.pix_pos.y)), CELL_W//2-2)
+        self.app.screen.blit(Utils.load_image(self.image),(int(self.pix_pos.x-CELL_W//2),int(self.pix_pos.y-CELL_H//2)))
         #Drawing rectangle in grid position
         # pygame.draw.rect(self.app.screen, RED,
         #                  (int(self.grid_pos[0]*CELL_W+TOP_BOTTOM_BUFFER//2), int(self.grid_pos[1]*CELL_H+TOP_BOTTOM_BUFFER//2),

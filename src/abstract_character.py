@@ -10,6 +10,7 @@ class AbstractCharacter(ABC):
         self.grid_pos = init_grid_pos  ##is a vec(col, row), so you can get x and y
         self.pix_pos = self.from_grid_to_pix_pos(self.grid_pos)
         self.direction = NEUTRAL
+        self.image = None
 
     def update(self):
         pass

@@ -1,7 +1,7 @@
 from pygame.math import Vector2 as vec
 #Screen settings
 WIDTH, HEIGHT = 610, 670
-FPS = 60
+FPS = 60 # higher is factor, higher is speed animation
 NUM_COLS = 28
 NUM_ROWS = 30
 TOP_BOTTOM_BUFFER = 50 #space around background to put text

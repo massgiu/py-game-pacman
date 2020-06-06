@@ -1,5 +1,7 @@
 import pygame
 import random
+
+import src
 from src.settings import *
 from src.abstract_character import AbstractCharacter
 
@@ -43,13 +45,24 @@ class Enemy(AbstractCharacter):
     def set_speed(self):
         if (self.personality == ENEMY_PERSONALITIES[0] or  # speedy
                 self.personality == ENEMY_PERSONALITIES[3]):  # scared
-            return 2
+            return 4
         else:
-            return 1
+            return 2
 
     def draw(self, enemy_index):
-        pygame.draw.circle(self.app.screen, ENEMY_COLORS[enemy_index], (int(self.pix_pos.x), int(self.pix_pos.y)),
-                           self.radius)
+        # pygame.draw.circle(self.app.screen, ENEMY_COLORS[enemy_index], (int(self.pix_pos.x), int(self.pix_pos.y)),
+        #                    self.radius)
+        if enemy_index == 0:
+            self.image = 'blue'
+        elif enemy_index == 1:
+            self.image = 'green'
+        elif enemy_index == 2:
+            self.image = 'red'
+        else:
+            self.image = 'yellow'
+        self.app.screen.blit(src.utils.Utils.load_image(self.image),
+                             (int(self.pix_pos.x - CELL_W // 2), int(self.pix_pos.y - CELL_H // 2)))
+
 
     def set_personality(self, index):
         return ENEMY_PERSONALITIES[index]

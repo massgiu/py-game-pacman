@@ -95,3 +95,7 @@ class Utils:
         state = 'playing'
         return state, coins
 
+    @classmethod
+    def load_image(cls, name_img):
+        image = pygame.image.load('../media/'+name_img+'.png')
+        return pygame.transform.scale(image, (CELL_W, CELL_H))
