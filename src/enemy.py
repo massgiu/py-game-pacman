@@ -29,6 +29,7 @@ class Enemy(AbstractCharacter):
         # self.grid_pos[0] = (self.pix_pos[0] - TOP_BOTTOM_BUFFER + CELL_W // 2) // CELL_W + 1
         # self.grid_pos[1] = (self.pix_pos[1] - TOP_BOTTOM_BUFFER + CELL_H // 2) // CELL_H + 1
 
+
     def set_target(self, personality):
         if personality == ENEMY_PERSONALITIES[0] or self.personality == ENEMY_PERSONALITIES[1]:  # speedy or slow
             return self.app.player.grid_pos  # target to pursuit
@@ -45,23 +46,28 @@ class Enemy(AbstractCharacter):
     def set_speed(self):
         if (self.personality == ENEMY_PERSONALITIES[0] or  # speedy
                 self.personality == ENEMY_PERSONALITIES[3]):  # scared
-            return 4
+            return 2*ENEMY_SPEED
         else:
-            return 2
+            return ENEMY_SPEED
 
-    def draw(self, enemy_index):
+    def draw(self, enemy_index, player_power):
         # pygame.draw.circle(self.app.screen, ENEMY_COLORS[enemy_index], (int(self.pix_pos.x), int(self.pix_pos.y)),
         #                    self.radius)
-        if enemy_index == 0:
-            self.image = 'blue'
-        elif enemy_index == 1:
-            self.image = 'green'
-        elif enemy_index == 2:
-            self.image = 'red'
+        if not player_power:
+            if enemy_index == 0:
+                self.image = 'blue'
+            elif enemy_index == 1:
+                self.image = 'green'
+            elif enemy_index == 2:
+                self.image = 'red'
+            else:
+                self.image = 'yellow'
+            self.app.screen.blit(src.utils.Utils.load_image(self.image),
+                                 (int(self.pix_pos.x - CELL_W // 2), int(self.pix_pos.y - CELL_H // 2)))
         else:
-            self.image = 'yellow'
-        self.app.screen.blit(src.utils.Utils.load_image(self.image),
-                             (int(self.pix_pos.x - CELL_W // 2), int(self.pix_pos.y - CELL_H // 2)))
+            self.image = 'dark'
+            self.app.screen.blit(src.utils.Utils.load_image(self.image),
+                                 (int(self.pix_pos.x - CELL_W // 2), int(self.pix_pos.y - CELL_H // 2)))
 
 
     def set_personality(self, index):

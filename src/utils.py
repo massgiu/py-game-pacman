@@ -12,6 +12,7 @@ class Utils:
     def read_layout(self, background):
         walls = []
         coins = []
+        biscuits = []
         enemies_start_pos = []
         with open('../media/wall.txt', 'r') as file:
             for height, line in enumerate(file):
@@ -22,12 +23,14 @@ class Utils:
                         coins.append(vec(width, height))
                     elif char == 'P':
                         player_start_pos = [width, height]
+                    elif char == 'R':
+                        biscuits.append(vec(width, height))
                     elif char in ['2', '3', '4', '5']:
                         enemies_start_pos.append([width, height])
                     elif char == 'B':
                         pygame.draw.rect(background, BLACK, (width * CELL_W, height * CELL_H,
                                                          CELL_W, CELL_H))
-        return walls, coins, player_start_pos, enemies_start_pos
+        return walls, coins, biscuits, player_start_pos, enemies_start_pos
 
     @classmethod
     def draw_text(self, words, screen, pos, size, color, font_name, centered=False):
@@ -54,10 +57,15 @@ class Utils:
         #                      (coin[0]*self.cell_width, coin[1]*self.cell_height, self.cell_width, self.cell_height))
 
     @classmethod
-    def draw_coins(self, screen, coins):
+    def draw_coins_biscuits(self, screen, coins, biscuits):
         for coin in coins:
             pygame.draw.circle(screen, COINS_COLOR, (int(coin.x * CELL_W + CELL_W // 2) + TOP_BOTTOM_BUFFER // 2,
                           int(coin.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),5)
+        for bisc in biscuits:
+            pygame.draw.circle(screen, BISCUITS_COLOR, (int(bisc.x * CELL_W + CELL_W // 2) + TOP_BOTTOM_BUFFER // 2,
+                          int(bisc.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),5)
+
+
     @classmethod
     def remove_life(self, player, player_start_pos, enemies, enemies_start_pos):
         player.lives -= 1
@@ -91,7 +99,7 @@ class Utils:
             enemy.direction = NEUTRAL
         self.coins = []
         # redraws coins
-        _, coins, _, _ = Utils.read_layout(screen)
+        _, coins, _, _, _ = Utils.read_layout(screen)
         state = 'playing'
         return state, coins
 

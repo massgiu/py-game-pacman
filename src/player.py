@@ -12,7 +12,9 @@ class Player(AbstractCharacter):
         self.stored_direction = None
         self.able_to_move = True
         self.current_score = 0
-        self.speed = 4
+        self.speed = PLAYER_SPEED
+        self.power = False
+        self.start_time = 0
         self.lives = 3
 
     def update(self):
@@ -23,8 +25,8 @@ class Player(AbstractCharacter):
                 self.direction = self.stored_direction
             self.able_to_move = self.can_move(self.direction) #True if in that 'direction' ther isn't a wall
         self.grid_pos[0], self.grid_pos[1] = self.from_pixel_to_grid_pos(self.pix_pos)
-        if self.is_on_coin():
-            self.eat_coin()
+        self.eaten_coin()
+        self.eaten_biscuit()
 
     def draw(self):
         if self.direction == RIGHT:
@@ -45,14 +47,20 @@ class Player(AbstractCharacter):
         for x in range(self.lives):
             pygame.draw.circle(self.app.screen, PLAYER_COLOR, ((2*CELL_W + CELL_W*x), HEIGHT-15), CELL_W//2)
 
-    def is_on_coin(self):
-        if self.grid_pos in self.app.coins:
-            return self.is_cell_centered()
-        return False
+    def eaten_coin(self):
+        if self.grid_pos in self.app.coins and self.is_cell_centered():
+            self.app.coins.remove(self.grid_pos)
+            self.current_score += 1
 
-    def eat_coin(self):
-        self.app.coins.remove(self.grid_pos)
-        self.current_score +=1
+    def eaten_biscuit(self):
+        if self.grid_pos in self.app.biscuits and self.is_cell_centered():
+            self.app.biscuits.remove(self.grid_pos)
+            self.power = True
+            self.start_time = pygame.time.get_ticks()
+
+    # def eat_coin(self):
+    #     self.app.coins.remove(self.grid_pos)
+    #     self.current_score +=1
 
     def move(self, direction):
         self.stored_direction = direction

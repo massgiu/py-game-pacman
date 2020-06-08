@@ -18,6 +18,7 @@ RED = (255,0,0)
 GREY = (90,90,90)
 YELLOW = (167, 179, 34)
 COINS_COLOR = (124, 123, 7)
+BISCUITS_COLOR = (255, 0, 0)
 ENEMY_COLORS = [(66,133,244),(219,68,55),(244,160,0),(15,157,88)]
 ENEMY_PERSONALITIES = ['speedy', 'slow', 'random', 'scared']
 #font settings
@@ -32,3 +33,6 @@ RIGHT = vec(1,0) #increases 1 width pixel
 UP = vec(0,-1) #decreases 1 height pixel
 DOWN = vec(0,1) #increases 1 height pixel
 NEUTRAL = vec(0,0)
+PLAYER_SPEED = 4
+ENEMY_SPEED = 1
+TIME_TO_EAT = 10000
