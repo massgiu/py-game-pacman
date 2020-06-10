@@ -60,10 +60,10 @@ class Utils:
     def draw_coins_biscuits(self, screen, coins, biscuits):
         for coin in coins:
             pygame.draw.circle(screen, COINS_COLOR, (int(coin.x * CELL_W + CELL_W // 2) + TOP_BOTTOM_BUFFER // 2,
-                          int(coin.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),5)
+                          int(coin.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),COINS_RADIUS)
         for bisc in biscuits:
             pygame.draw.circle(screen, BISCUITS_COLOR, (int(bisc.x * CELL_W + CELL_W // 2) + TOP_BOTTOM_BUFFER // 2,
-                          int(bisc.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),5)
+                          int(bisc.y * CELL_H + CELL_H // 2) + TOP_BOTTOM_BUFFER // 2),BISCUITS_RADIUS)
 
 
     @classmethod
@@ -99,11 +99,19 @@ class Utils:
             enemy.direction = NEUTRAL
         self.coins = []
         # redraws coins
-        _, coins, _, _, _ = Utils.read_layout(screen)
+        _, coins, biscuits, _, _ = Utils.read_layout(screen)
         state = 'playing'
-        return state, coins
+        return state, coins, biscuits
 
     @classmethod
     def load_image(cls, name_img):
         image = pygame.image.load('../media/'+name_img+'.png')
         return pygame.transform.scale(image, (CELL_W, CELL_H))
+
+    @classmethod
+    def remove_enemy(cls, index, enemies, enemies_start_pos):
+        # reposition for enemyes
+        enemies[index].grid_pos = vec(enemies_start_pos[index])
+        # form grid to pixel
+        enemies[index].pix_pos = enemies[index].from_grid_to_pix_pos(enemies[index].grid_pos)
+        enemies[index].direction = NEUTRAL

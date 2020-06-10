@@ -74,10 +74,13 @@ class Enemy(AbstractCharacter):
         return ENEMY_PERSONALITIES[index]
 
     def move(self):
-        if self.personality == ENEMY_PERSONALITIES[2]: #random
+        if not self.app.player.power:
+            if self.personality == ENEMY_PERSONALITIES[2]: #random
+                self.direction = self.get_random_direction()
+            else:  # speedy, scared, slow pursuit player with BFS algo
+                self.direction = self.get_path_direction(self.target)
+        else:
             self.direction = self.get_random_direction()
-        else:  # speedy, scared, slow
-            self.direction = self.get_path_direction(self.target)
 
     '''
     This method creates random direction for enemy with 'random' personality
